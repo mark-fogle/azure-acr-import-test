@@ -18,7 +18,6 @@ using var host = Host.CreateDefaultBuilder(args)
         services.AddSingleton(context.Configuration.GetSection(nameof(ContainerRegistryManagementConfig)).Get<ContainerRegistryManagementConfig>());
         services.AddSingleton(context.Configuration.GetSection(nameof(ContainerImageImportSource)).Get<ContainerImageImportSource>());
         services.AddHttpClient<IContainerRegistryManagementService, ContainerRegistryManagementService>();
-        services.AddScoped<IContainerRegistryManagementService, ContainerRegistryManagementService>();
     })
     .Build();
 
