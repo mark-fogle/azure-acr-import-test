@@ -1,7 +1,8 @@
 ﻿using System.Net;
-using AcrImportConsoleTest.Services;
-using AcrImportConsoleTest.Services.Models;
 using Azure.Core;
+using Azure.Identity;
+using ContainerImportService;
+using ContainerImportService.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -18,6 +19,7 @@ using var host = Host.CreateDefaultBuilder(args)
         services.AddSingleton(context.Configuration.GetSection(nameof(ContainerRegistryManagementConfig)).Get<ContainerRegistryManagementConfig>());
         services.AddSingleton(context.Configuration.GetSection(nameof(ContainerImageImportSource)).Get<ContainerImageImportSource>());
         services.AddHttpClient<IContainerRegistryManagementService, ContainerRegistryManagementService>();
+        services.AddScoped<TokenCredential>(_ => new DefaultAzureCredential());
     })
     .Build();
 
@@ -38,7 +40,7 @@ var importContainerResponse = await containerRegistryManagementService.ImportCon
     Mode = ContainerImportMode.Force,
     Source = containerImportSource,
     TargetTags = destinationImages
-}, tokenResponse.Token);
+});
 
 if (!importContainerResponse.IsSuccessStatusCode)
 {
@@ -63,7 +65,7 @@ if (importContainerResponse.StatusCode == HttpStatusCode.Accepted)
     }
 
     var finalStatusReponse =
-        await containerRegistryManagementService.WaitForImportCompletionAsync(location, tokenResponse.Token);
+        await containerRegistryManagementService.WaitForImportCompletionAsync(location);
 
     if (!finalStatusReponse.IsSuccessStatusCode)
     {

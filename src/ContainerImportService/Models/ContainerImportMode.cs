@@ -1,4 +1,4 @@
-﻿namespace AcrImportConsoleTest.Services.Models;
+﻿namespace ContainerImportService.Models;
 
 /// <summary>
 /// When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail the operation before any copying begins.

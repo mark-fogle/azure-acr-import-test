@@ -1,4 +1,4 @@
-namespace AcrImportConsoleTest.Services.Models;
+namespace ContainerImportService.Models;
 
 public class ContainerRegistryManagementConfig
 {

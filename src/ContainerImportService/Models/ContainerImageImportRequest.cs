@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AcrImportConsoleTest.Services.Models
+namespace ContainerImportService.Models
 {
     public class ContainerImageImportRequest
     {
